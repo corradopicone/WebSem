@@ -1,0 +1,470 @@
+@prefix : <http://www.music.com/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix www: <http://www.music.com#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix list: <http://www.ontologydesignpatterns.org/cp/owl/list.owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sequence: <http://www.ontologydesignpatterns.org/cp/owl/sequence.owl#> .
+@prefix cpannotationschema: <http://www.ontologydesignpatterns.org/schemas/cpannotationschema.owl#> .
+@base <http://www.music.com/> .
+
+<http://www.music.com> rdf:type owl:Ontology ;
+                        owl:imports <http://www.ontologydesignpatterns.org/cp/owl/list.owl> ;
+                        rdfs:comment "Ontologia relativa alla musica, descritta in termini di generi, strumenti, artisti e canzoni." .
+
+#################################################################
+#    Object Properties
+#################################################################
+
+###  http://www.music.com#canta
+www:canta rdf:type owl:ObjectProperty ;
+          rdfs:subPropertyOf owl:topObjectProperty ;
+          owl:inverseOf www:èCantataDa ;
+          rdfs:domain www:Artista ,
+                      www:Cantante ;
+          rdfs:range www:Composizione ;
+          rdfs:comment "Collega un Artista alle Canzoni che interpreta vocalmente." ;
+          rdfs:label "Canta"@it .
+
+
+###  http://www.music.com#coProduce
+www:coProduce rdf:type owl:ObjectProperty ;
+              rdfs:subPropertyOf owl:topObjectProperty ;
+              rdfs:domain www:Artista ;
+              rdfs:range www:Artista ;
+              owl:propertyChainAxiom ( www:produce
+                                       www:scrive
+                                     ) ;
+              rdfs:comment "Indica che un Artista ha coprodotto un altro Artista o un altra composizione" ;
+              rdfs:label "coProduce"@it .
+
+
+###  http://www.music.com#produce
+www:produce rdf:type owl:ObjectProperty ;
+            rdfs:subPropertyOf owl:topObjectProperty ;
+            rdfs:domain www:Artista ;
+            rdfs:range www:Artista ;
+            rdfs:comment "Indica che un Artista ha prodotto un altro Artista" ;
+            rdfs:label "produce"@it .
+
+
+###  http://www.music.com#scrive
+www:scrive rdf:type owl:ObjectProperty ;
+           rdfs:subPropertyOf owl:topObjectProperty ;
+           rdfs:domain www:Artista ;
+           rdfs:range www:Brano ;
+           rdfs:comment "Collega un Artista alle Canzoni che ha scritto o composto" ;
+           rdfs:label "scrive"@it .
+
+
+###  http://www.music.com#tipologiaAlbum
+www:tipologiaAlbum rdf:type owl:ObjectProperty ;
+                   rdfs:domain www:Album ;
+                   rdfs:range www:Tipo_di_Album .
+
+
+###  http://www.music.com#èCantataDa
+www:èCantataDa rdf:type owl:ObjectProperty ;
+               rdfs:subPropertyOf owl:topObjectProperty ;
+               rdfs:domain www:Composizione ;
+               rdfs:range www:Artista ;
+               rdfs:comment "Indica che una determinata composizione è cantata da uno specifico artista" ;
+               rdfs:label "èCantataDa"@it .
+
+
+###  http://www.music.com#èCompostaDa
+www:èCompostaDa rdf:type owl:ObjectProperty ;
+                rdfs:domain www:Band ;
+                rdfs:range www:Artista ;
+                rdfs:comment "Indica che una Band è composta da determinati elementi" ;
+                rdfs:label "èCompostaDa"@it .
+
+
+###  http://www.music.com#èSuonataDa
+www:èSuonataDa rdf:type owl:ObjectProperty ;
+               rdfs:domain www:Brano ;
+               rdfs:range www:Strumentista ;
+               rdfs:comment "Indica che una certa canzone è suonata da un determinato artista" ;
+               rdfs:label "èSuonataDa"@it .
+
+
+#################################################################
+#    Data properties
+#################################################################
+
+###  http://www.music.com#annoDiUscita
+www:annoDiUscita rdf:type owl:DatatypeProperty ;
+                 rdfs:domain www:Album ;
+                 rdfs:range xsd:decimal ;
+                 rdfs:comment "Indica l'anno di uscita di un determinato album o canzone" ;
+                 rdfs:label "annoDiUscita"@it .
+
+
+###  http://www.music.com#haBPMe
+www:haBPMe rdf:type owl:DatatypeProperty ;
+           rdfs:domain www:Elettronica ;
+           rdfs:range xsd:int ;
+           rdfs:comment "Indica i bpm per il genere elettronica" ;
+           rdfs:label "haBPMe"@it .
+
+
+###  http://www.music.com#haBPMh
+www:haBPMh rdf:type owl:DatatypeProperty ;
+           rdfs:domain www:HipHop ;
+           rdfs:range xsd:int ;
+           rdfs:comment "Indica i bpm per il gener hiphop" ;
+           rdfs:label "haBPMh"@it .
+
+
+###  http://www.music.com#haBPMp
+www:haBPMp rdf:type owl:DatatypeProperty ;
+           rdfs:domain www:Pop ;
+           rdfs:range xsd:int ;
+           rdfs:comment "Indica i bpm per il genere pop" ;
+           rdfs:label "haBPMp"@it .
+
+
+###  http://www.music.com#haBPMr
+www:haBPMr rdf:type owl:DatatypeProperty ;
+           rdfs:domain www:Rock ;
+           rdfs:range xsd:int ;
+           rdfs:comment "Indica i bpm per il genere rock" ;
+           rdfs:label "haBPMr"@it .
+
+
+###  http://www.music.com#haSuono
+www:haSuono rdf:type owl:DatatypeProperty ;
+            rdfs:domain www:Percussione ;
+            rdfs:range xsd:string ;
+            rdfs:comment "Indica la tipolgia di persucussione se diretta o indiretta" ;
+            rdfs:label "haSuono"@it .
+
+
+###  http://www.music.com#nomeCanzone
+www:nomeCanzone rdf:type owl:DatatypeProperty ;
+                rdfs:subPropertyOf owl:topDataProperty ;
+                rdf:type owl:FunctionalProperty ;
+                rdfs:domain www:Brano ;
+                rdfs:range xsd:string ;
+                rdfs:comment "Indica il nome di una specifica canzone" ;
+                rdfs:label "nomeCanzone"@it .
+
+
+###  http://www.music.com#numeroCorde
+www:numeroCorde rdf:type owl:DatatypeProperty ;
+                rdfs:domain www:Corda ;
+                rdfs:range xsd:int ;
+                rdfs:comment "Indica quante corde ha un determianto strumento" ;
+                rdfs:label "numeroCorde"@it .
+
+
+###  http://www.music.com#tipologia
+www:tipologia rdf:type owl:DatatypeProperty ;
+              rdfs:domain www:Strumento ;
+              rdfs:range xsd:string ;
+              rdfs:comment "Indica la tipologia di uno specifico strumento" ;
+              rdfs:label "tipologia"@it .
+
+
+###  http://www.music.com#tipologiaAerofoni
+www:tipologiaAerofoni rdf:type owl:DatatypeProperty ;
+                      rdfs:domain www:Fiato ;
+                      rdfs:range xsd:string ;
+                      rdfs:comment "Indica la tipologia di strumento a fiato se si tratta di fiati a bocchino, ad ancia o ad imboccatura semplice" ;
+                      rdfs:label "tipologiaAerofoni"@it .
+
+
+#################################################################
+#    Classes
+#################################################################
+
+###  http://www.music.com#Album
+www:Album rdf:type owl:Class ;
+          rdfs:subClassOf list:List ;
+          rdfs:comment "Raccolta di brani musicali pubblicata come un’opera unitaria, spesso con un tema o uno stile coerente." ;
+          rdfs:label "Album"@it .
+
+
+###  http://www.music.com#Artista
+www:Artista rdf:type owl:Class ;
+            owl:equivalentClass <http://xmlns.com/foaf/0.1/MusicalArtist> ;
+            rdfs:subClassOf www:Musica ;
+            rdfs:comment "Persona o gruppo che crea, interpreta o esegue musica." ;
+            rdfs:label "Artista"@it .
+
+
+###  http://www.music.com#Band
+www:Band rdf:type owl:Class ;
+         rdfs:subClassOf www:Artista ;
+         rdfs:comment "Gruppo musicale composto da più artisti che suonano insieme." ;
+         rdfs:label "Band"@it .
+
+
+###  http://www.music.com#Brano
+www:Brano rdf:type owl:Class ;
+          rdfs:subClassOf list:ListItem ;
+          rdfs:comment "Singola composizione musicale che può essere parte di un album o una pubblicazione assestante." ;
+          rdfs:label "Brano"@it .
+
+
+###  http://www.music.com#Cantante
+www:Cantante rdf:type owl:Class ;
+             rdfs:subClassOf www:Artista ;
+             rdfs:comment "Artista che utilizza la voce come strumento musicale principale." ;
+             rdfs:label "Cantante"@it .
+
+
+###  http://www.music.com#Composizione
+www:Composizione rdf:type owl:Class ;
+                 rdfs:subClassOf www:Musica ;
+                 rdfs:comment "Unità musicale composta da brani o album." ;
+                 rdfs:label "Composizione"@it .
+
+
+###  http://www.music.com#Corda
+www:Corda rdf:type owl:Class ;
+          rdfs:subClassOf www:Strumento ;
+          rdfs:comment "Strumenti musicali che generano suono tramite corde vibranti." ;
+          rdfs:label "Corda"@it .
+
+
+###  http://www.music.com#Elettronica
+www:Elettronica rdf:type owl:Class ;
+                rdfs:subClassOf www:Genere ;
+                rdfs:comment "Genere musicale prodotto principalmente con strumenti digitali e sintetizzatori." ;
+                rdfs:label "Elettronica"@it .
+
+
+###  http://www.music.com#Fiato
+www:Fiato rdf:type owl:Class ;
+          rdfs:subClassOf www:Strumento ;
+          rdfs:comment "Strumenti che producono suono tramite l’aria soffiata in essi." ;
+          rdfs:label "Fiato"@it .
+
+
+###  http://www.music.com#Genere
+www:Genere rdf:type owl:Class ;
+           rdfs:subClassOf www:Musica ;
+           rdfs:comment "Categoria musicale che caratterizza uno stile o un insieme di caratteristiche sonore." ;
+           rdfs:label "Genere"@it .
+
+
+###  http://www.music.com#HipHop
+www:HipHop rdf:type owl:Class ;
+           rdfs:subClassOf www:Genere ;
+           rdfs:comment "Genere basato su rap, beat ritmici e cultura urbana." ;
+           rdfs:label "HipHop"@it .
+
+
+###  http://www.music.com#Musica
+www:Musica rdf:type owl:Class ;
+           rdfs:comment "Rappresenta il dominio della musica, includendo generi, artisti, composizioni e strumenti." ;
+           rdfs:label "Musica"@it .
+
+
+###  http://www.music.com#Percussione
+www:Percussione rdf:type owl:Class ;
+                rdfs:subClassOf www:Strumento ;
+                rdfs:comment "Strumenti suonati percuotendo una superficie per produrre ritmo." ;
+                rdfs:label "Percussione"@it .
+
+
+###  http://www.music.com#Pop
+www:Pop rdf:type owl:Class ;
+        rdfs:subClassOf www:Genere ;
+        rdfs:comment "Genere musicale con melodie orecchiabili e commerciali." ;
+        rdfs:label "Pop"@it .
+
+
+###  http://www.music.com#Rock
+www:Rock rdf:type owl:Class ;
+         rdfs:subClassOf www:Genere ;
+         rdfs:comment "Genere musicale caratterizzato dall’uso di chitarre elettriche e ritmi energici." ;
+         rdfs:label "Rock"@it .
+
+
+###  http://www.music.com#Strumentista
+www:Strumentista rdf:type owl:Class ;
+                 rdfs:subClassOf www:Artista ;
+                 rdfs:comment "Musicista che suona uno o più strumenti musicali." ;
+                 rdfs:label "Strumentista"@it .
+
+
+###  http://www.music.com#Strumento
+www:Strumento rdf:type owl:Class ;
+              rdfs:subClassOf www:Musica ;
+              rdfs:comment "Oggetti utilizzati per produrre suoni musicali." ;
+              rdfs:label "Strumento"@it .
+
+
+###  http://www.music.com#Tipo_di_Album
+www:Tipo_di_Album rdf:type owl:Class ;
+                  owl:equivalentClass [ rdf:type owl:Class ;
+                                        owl:oneOf ( www:Compilation
+                                                    www:Ep
+                                                    www:Live
+                                                    www:Studio
+                                                  )
+                                      ] ;
+                  rdfs:subClassOf www:Musica ;
+                  rdfs:comment "Questa classe enumerata rappresenta le diverse tipologie di album musicali, come Compilation, EP, Live e Studio" ;
+                  rdfs:label "Tipo di Album"@it .
+
+
+###  http://www.ontologydesignpatterns.org/cp/owl/collectionentity.owl#Collection
+<http://www.ontologydesignpatterns.org/cp/owl/collectionentity.owl#Collection> rdfs:subClassOf www:Composizione .
+
+
+###  http://xmlns.com/foaf/0.1/MusicalArtist
+<http://xmlns.com/foaf/0.1/MusicalArtist> rdf:type owl:Class ;
+                                          rdfs:subClassOf www:Musica ;
+                                          rdfs:seeAlso "http://dbpedia.org/ontology/MusicalArtist" .
+
+
+#################################################################
+#    Individuals
+#################################################################
+
+###  http://www.music.com#Batteria
+www:Batteria rdf:type owl:NamedIndividual ;
+             www:haSuono "Indeterminato" ;
+             rdfs:comment "Specifica tipologia di percussione" ;
+             rdfs:label "Batteria"@it .
+
+
+###  http://www.music.com#Chitarra
+www:Chitarra rdf:type owl:NamedIndividual ;
+             www:numeroCorde 6 ;
+             rdfs:comment "Specifica tipologia di strumento a corde" ;
+             rdfs:label "Chitarra"@it .
+
+
+###  http://www.music.com#Compilation
+www:Compilation rdf:type owl:NamedIndividual ;
+                rdfs:comment "Specifica tipologia di album" ;
+                rdfs:label "Compilation"@it .
+
+
+###  http://www.music.com#David_Gilmour
+www:David_Gilmour rdf:type owl:NamedIndividual ;
+                  www:canta www:Time ;
+                  www:scrive www:Time ;
+                  rdfs:comment "Specifico artista appartenente al gruppo Pink Floyd" ;
+                  rdfs:label "David_Gilmour"@it .
+
+
+###  http://www.music.com#Ep
+www:Ep rdf:type owl:NamedIndividual ;
+       rdfs:comment "Specifica tipologia di album" ;
+       rdfs:label "Ep"@it .
+
+
+###  http://www.music.com#Flashing_Lights
+www:Flashing_Lights rdf:type owl:NamedIndividual ;
+                    www:haBPMh 90 ;
+                    rdfs:comment "Specifica canzone HipHop" ;
+                    rdfs:label "Flashing_Lights"@en .
+
+
+###  http://www.music.com#Live
+www:Live rdf:type owl:NamedIndividual ;
+         rdfs:comment "specifica tipologia di album" ;
+         rdfs:label "Live"@it .
+
+
+###  http://www.music.com#Nick_Mason
+www:Nick_Mason rdf:type owl:NamedIndividual ;
+               rdfs:comment "Artista appartenente al gruppo PinkFloyd" ;
+               rdfs:label "Nick_Mason"@it .
+
+
+###  http://www.music.com#Pink_Floyd
+www:Pink_Floyd rdf:type owl:NamedIndividual ;
+               www:èCompostaDa www:David_Gilmour ,
+                               www:Nick_Mason ,
+                               www:Richard_Wright ,
+                               www:Roger_Waters ;
+               rdfs:comment "Gruppo rock" ;
+               rdfs:label "Pink_Floyd"@it .
+
+
+###  http://www.music.com#Richard_Wright
+www:Richard_Wright rdf:type owl:NamedIndividual ;
+                   rdfs:comment "Artista appartenente al gruppo Pink Floyd" ;
+                   rdfs:label "Richard_Wright"@it .
+
+
+###  http://www.music.com#Roger_Waters
+www:Roger_Waters rdf:type owl:NamedIndividual ;
+                 www:produce www:David_Gilmour ;
+                 rdfs:comment "Artista appartenende al gruppo PinkFloyd" ;
+                 rdfs:label "Roger_Waters"@it .
+
+
+###  http://www.music.com#Sax
+www:Sax rdf:type owl:NamedIndividual ;
+        www:tipologiaAerofoni "Ad Ancia" ;
+        rdfs:comment "Specifico strumento a fiato" ;
+        rdfs:label "Sax"@it .
+
+
+###  http://www.music.com#Shake_it_Off
+www:Shake_it_Off rdf:type owl:NamedIndividual ;
+                 www:haBPMp 160 ;
+                 rdfs:comment "Specifico brano Pop" ;
+                 rdfs:label "Shake_it_Off"@en .
+
+
+###  http://www.music.com#Smack_Yo
+www:Smack_Yo rdf:type owl:NamedIndividual ;
+             www:haBPMe 127 ;
+             rdfs:comment "Specifica canzone elettronica" ;
+             rdfs:label "Smack_Yo"@en .
+
+
+###  http://www.music.com#Studio
+www:Studio rdf:type owl:NamedIndividual ;
+           rdfs:comment "Specifica tipologia di album" ;
+           rdfs:label "Studio"@it .
+
+
+###  http://www.music.com#The_Dark_Side_of_The_Moon
+www:The_Dark_Side_of_The_Moon rdf:type owl:NamedIndividual ;
+                              www:annoDiUscita 1973 ;
+                              rdfs:comment "Famoso album rock" ;
+                              rdfs:label "The_Dark_Side_of_the_Moon"@en .
+
+
+###  http://www.music.com#The_Great_Gig_in_the_Sky
+www:The_Great_Gig_in_the_Sky rdf:type owl:NamedIndividual ;
+                             www:èSuonataDa www:Nick_Mason ,
+                                            www:Richard_Wright ,
+                                            www:Roger_Waters ;
+                             sequence:follows www:Time ;
+                             www:haBPMr 75 ;
+                             www:nomeCanzone "The great Gig in the Sky" ;
+                             rdfs:comment "Canzone dell'album the Dark Side of the Moon dei Pink Floyd" ;
+                             rdfs:label "The_Great_Gig_in_the_Sky"@en .
+
+
+###  http://www.music.com#Time
+www:Time rdf:type owl:NamedIndividual ;
+         list:firstItemOf www:The_Dark_Side_of_The_Moon ;
+         www:haBPMr 75 ;
+         www:nomeCanzone "Time" ;
+         rdfs:comment "Canzone dell'album the Dark Side of the Moon dei Pink Floyd" ;
+         rdfs:label "Time"@en .
+
+
+###  http://www.music.com#Us_and_Them
+www:Us_and_Them rdf:type owl:NamedIndividual ;
+                sequence:follows www:The_Great_Gig_in_the_Sky ;
+                www:haBPMr 75 ;
+                www:nomeCanzone "Us and Them" ;
+                rdfs:comment "Canzone dell'album the Dark Side of the Moon dei Pink Floyd" ;
+                rdfs:label "Us_and_Them"@en .
+
+
+###  Generated by the OWL API (version 4.5.29.2024-05-13T12:11:03Z) https://github.com/owlcs/owlapi
